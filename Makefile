@@ -5,7 +5,7 @@ out/%: src/%.scm
 > @ cp $< $@
 > @ chmod +x $@
 
-build: $(shell find src -type f | sed 's|^src/|out/|' | sed 's|.scm$||')
+build: $(shell find src -type f | sed 's|^src/|out/|' | sed 's|.scm$$||')
 
 clean:
 > @ rm -rf out

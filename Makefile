@@ -2,7 +2,7 @@
 
 out/%: src/%.scm
 > @ mkdir -p $$(dirname $@)
-> @ cp $< $@
+> @ (printf '#!/bin/guile --no-auto-compile\n!#\n\n'; cat $<) > $@
 > @ chmod +x $@
 
 build: $(shell find src -type f | sed 's|^src/|out/|' | sed 's|.scm$$||')

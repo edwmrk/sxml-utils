@@ -1,6 +1,3 @@
-#!/bin/guile --no-auto-compile
-!#
-
 (use-modules
   (sxml simple))
 

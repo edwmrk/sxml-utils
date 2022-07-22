@@ -62,9 +62,9 @@
   (if (access? file R_OK)
     (begin
       (display (car (sxml-remove-special-tags
-                     (xml->sxml
-                      (open-input-file file)
-                      #:trim-whitespace? #t))))
+                      (xml->sxml
+                        (open-input-file file)
+                        #:trim-whitespace? #t))))
       (display "\n"))
     (begin
       (display

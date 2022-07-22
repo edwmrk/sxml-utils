@@ -74,5 +74,4 @@
       (exit 2))))
 
 (parse-command-line-options)
-(let ((input-file (get-input-file)))
-  (xml-file->sxml-output input-file))
+(xml-file->sxml-output (get-input-file))

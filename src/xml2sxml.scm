@@ -15,7 +15,8 @@
 
 (use-modules
   (srfi srfi-1)
-  (sxml simple))
+  (sxml simple)
+  (ice-9 pretty-print))
 
 (define %program-name
   (basename (list-ref (command-line) 0)))
@@ -61,10 +62,10 @@
 (define (xml-file->sxml-output file)
   (if (access? file R_OK)
     (begin
-      (write (car (sxml-remove-special-tags
-                    (xml->sxml
-                      (open-input-file file)
-                      #:trim-whitespace? #t))))
+      (pretty-print (car (sxml-remove-special-tags
+                           (xml->sxml
+                             (open-input-file file)
+                             #:trim-whitespace? #t))))
       (display "\n"))
     (begin
       (display

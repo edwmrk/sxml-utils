@@ -24,7 +24,7 @@
 
 (define %command-line-options
   (getopt-long (command-line)
-    '((help    (single-char #\h) (value #f)))))
+    '((help (single-char #\h) (value #f)))))
 
 (define %command-line-arguments
   (option-ref %command-line-options '() '()))

@@ -16,41 +16,31 @@
 (use-modules
   (srfi srfi-1)
   (sxml simple)
-  (ice-9 pretty-print))
+  (ice-9 pretty-print)
+  (ice-9 getopt-long))
 
 (define %program-name
   (basename (list-ref (command-line) 0)))
 
-(define (get-1st-argument)
-  (list-ref (command-line) 1))
+(define %command-line-options
+  (getopt-long (command-line)
+    '((help    (single-char #\h) (value #f)))))
 
-(define (get-2nd-argument)
-  (list-ref (command-line) 2))
+(define %command-line-arguments
+  (option-ref %command-line-options '() '()))
 
-(define (parse-command-line-options)
-  (when (or (= (length (command-line)) 1)
-            (equal? (get-1st-argument) "--help")
-            (equal? (get-1st-argument) "-h"))
-    (display
-      (string-append
-        "Usage: " %program-name " [options] [file]\n"
-        "\n"
-        "options: \n"
-        "  -h, --help  show this help message and exit\n"))
-    (exit 0))
-  (when (and (string-prefix? "-" (get-1st-argument))
-             (not (equal? (get-1st-argument) "--")))
-    (display
-      (string-append
-        "Unrecognized option: '" (get-1st-argument) "'\n"
-        "Try '" %program-name " --help' for more information.\n")
-      (current-error-port))
-    (exit 1)))
+(define %help-wanted?
+  (option-ref %command-line-options 'help #f))
+
+(define %help-message
+  (string-append
+    "Usage: " %program-name " [options] [file]\n"
+    "\n"
+    "options: \n"
+    "  -h, --help  show this help message and exit\n"))
 
 (define (get-input-file)
-  (if (equal? (get-1st-argument) "--")
-    (get-2nd-argument)
-    (get-1st-argument)))
+  (car %command-line-arguments))
 
 (define (sxml-remove-special-tags tree)
   (remove
@@ -74,5 +64,8 @@
         (current-error-port))
       (exit 2))))
 
-(parse-command-line-options)
-(xml-file->sxml-output (get-input-file))
+(if %help-wanted?
+  (display %help-message)
+  (if (not (null? %command-line-arguments))
+    (xml-file->sxml-output (get-input-file))
+    (display %help-message)))

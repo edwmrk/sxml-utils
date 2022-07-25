@@ -34,7 +34,7 @@
   (string-append
     "Usage: " %program-name " [options] [file]\n"
     "\n"
-    "options: \n"
+    "options:\n"
     "  -h, --help  show this help message and exit\n"))
 
 (define (get-input-file)

@@ -44,7 +44,7 @@
 
 (define (sxml-remove-special-tags tree)
   (remove
-    (lambda (element)
+    (λ (element)
       (or (eq? element '*TOP*)
           (eq? (car element) '*PI*)))
     tree))
